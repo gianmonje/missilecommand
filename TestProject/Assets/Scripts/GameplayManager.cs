@@ -140,21 +140,23 @@ public class GameplayManager : Singleton<GameplayManager> {
     private void Update() {
         if (!isInitialized) return;
 
-        for (int touchIndex = Input.touchCount; --touchIndex >= 0;) {
-            if (Input.touchCount == 1) {
-                Touch touch = Input.GetTouch(touchIndex);
-                if (TouchPhase.Began == touch.phase) {
+        if (Application.platform == RuntimePlatform.Android) {
+            for (int touchIndex = Input.touchCount; --touchIndex >= 0;) {
+                if (Input.touchCount == 1) {
+                    Touch touch = Input.GetTouch(touchIndex);
+                    if (TouchPhase.Began == touch.phase) {
+                        FireMissile();
+                    }
+                }
+            }
+        } else {
+            if (Input.touchCount <= 1) {
+                if (Input.GetMouseButtonDown(0)) {
                     FireMissile();
                 }
             }
+
         }
-
-        //if (Input.touchCount <= 1) {
-        //    if (Input.GetMouseButtonDown(0)) {
-        //        FireMissile();
-        //    }
-        //}
-
 
         //Handle Missiles
         HandleMissiles();
